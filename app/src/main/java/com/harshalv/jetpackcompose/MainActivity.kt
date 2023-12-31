@@ -10,37 +10,42 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.harshalv.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.harshalv.jetpackcompose.ui.theme.DogProfilePageTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetpackComposeTheme {
+            DogProfilePageTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    // Todo 3: Call the MYApp function for Application first Screen
+                    MyApp()
                 }
             }
         }
     }
 }
 
+//Todo 1 create a new compose function and call the Greeting function
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun MyApp() {
+    Greeting("Welcome To Jetpack Compose Learning")
+}
+
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello, $name!")
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    JetpackComposeTheme {
-        Greeting("Android")
+fun DefaultPreview() {
+    DogProfilePageTheme {
+        //Todo 2: call the MyApp function for preview
+        MyApp()
     }
 }
