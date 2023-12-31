@@ -7,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.harshalv.jetpackcompose.ui.NewsApp
 import com.harshalv.jetpackcompose.ui.theme.NewsAppTheme
 
@@ -30,5 +29,5 @@ class MainActivity : ComponentActivity() {
 fun DefaultPreview() {
     NewsAppTheme {
         NewsApp()
-  }
+    }
 }

@@ -37,6 +37,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -52,9 +53,8 @@ android {
 dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
     // Accompanist
     implementation("com.google.accompanist:accompanist-pager:0.19.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.19.0")
