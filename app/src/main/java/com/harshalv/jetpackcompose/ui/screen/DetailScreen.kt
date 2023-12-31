@@ -1,5 +1,6 @@
 package com.harshalv.jetpackcompose.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,7 @@ import com.harshalv.jetpackcompose.model.MockData
 import com.harshalv.jetpackcompose.model.MockData.getTimeAgo
 import com.skydoves.landscapist.coil.CoilImage
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailScreen(article: TopNewsArticle, scrollState: ScrollState, navController: NavController) {
     Scaffold(topBar = {
@@ -85,7 +87,8 @@ fun DetailTopAppBar(onBackPressed: () -> Unit = {}) {
             IconButton(onClick = { onBackPressed() }) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Arrow Back")
             }
-        })
+        }
+    )
 }
 
 @Composable

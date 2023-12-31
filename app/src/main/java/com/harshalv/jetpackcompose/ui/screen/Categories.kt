@@ -48,7 +48,6 @@ fun Categories(
     Column {
         // Step 15: if state is loading show the loadingui, if there is an error show the errorui,
         //if request is successful get the returned article and pass to ArticleContent
-
         when {
             isLoading.value -> {
                 LoadingUI()
@@ -76,8 +75,6 @@ fun Categories(
             articles = viewModel.getArticleByCategory.collectAsState().value.articles
                 ?: listOf()
         )
-
-
     }
 }
 

@@ -1,7 +1,6 @@
 package com.harshalv.jetpackcompose.model
 
 import android.icu.text.SimpleDateFormat
-import android.os.Build
 import android.util.Log
 import com.harshalv.jetpackcompose.R
 import java.util.Calendar
@@ -74,11 +73,6 @@ object MockData {
         )
     )
 
-
-    fun getNews(newsId: Int?): NewsData {
-        return topNewsList.first { it.id == newsId }
-    }
-
     fun Date.getTimeAgo(): String {
         val calendar = Calendar.getInstance()
         calendar.time = this
@@ -118,15 +112,8 @@ object MockData {
     }
 
     fun stringToDate(publishedAt: String): Date {
-        val date =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssxx", Locale.ENGLISH).parse(publishedAt)
-            } else {
-                java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssxx", Locale.ENGLISH)
-                    .parse(publishedAt)
-            }
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssxx", Locale.ENGLISH).parse(publishedAt)
         Log.d("published", "$date")
         return date
     }
 }
-

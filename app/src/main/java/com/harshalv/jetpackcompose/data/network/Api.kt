@@ -16,9 +16,7 @@ object Api {
         .add(KotlinJsonAdapterFactory())
         .build()
 
-
     private val logging = HttpLoggingInterceptor()
-
 
     private val httpClient = OkHttpClient.Builder().apply {
         addInterceptor(
@@ -28,12 +26,9 @@ object Api {
                 return@Interceptor chain.proceed(builder.build())
             }
         )
-
         logging.level = HttpLoggingInterceptor.Level.BODY
         addNetworkInterceptor(logging)
-
     }.build()
-
 
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))

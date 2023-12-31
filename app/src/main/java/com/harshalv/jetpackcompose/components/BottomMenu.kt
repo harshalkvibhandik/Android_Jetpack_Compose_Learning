@@ -48,9 +48,7 @@ fun BottomMenu(navController: NavController) {
                         contentDescription = it.title
                     )
                 },
-
-                )
-
+            )
         }
     }
 }

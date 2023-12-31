@@ -63,7 +63,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _getArticleByCategory.value = repository.getArticleByCategory(category = category)
             _isLoading.value = false
         }
-
     }
 
     fun onSelectedCategoryChanged(category: String) {

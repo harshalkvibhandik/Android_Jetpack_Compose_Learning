@@ -1,6 +1,5 @@
 package com.harshalv.jetpackcompose.data.models
 
-
 data class TopNewsArticle(
     val source: Source? = null,
     val author: String? = null,

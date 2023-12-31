@@ -14,6 +14,4 @@ class MainApp : Application() {
     val repository by lazy {
         Repository(manager = manager)
     }
-
-
 }

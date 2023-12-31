@@ -11,5 +11,4 @@ class Repository(private val manager: NewsManager) {
     suspend fun getArticlesBySource(source: String) = manager.getArticleBySource(source = source)
 
     suspend fun getSearchedArticles(query: String) = manager.getSearchedArticles(query = query)
-
 }
