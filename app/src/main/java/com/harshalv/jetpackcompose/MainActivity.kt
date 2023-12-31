@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Todo 6: Add the ProfilePage as the device display
+                    // Step 6: Add the ProfilePage as the device display
                     ProfilePage()
                 }
             }
