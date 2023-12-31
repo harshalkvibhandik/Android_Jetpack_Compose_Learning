@@ -24,7 +24,7 @@ object Api {
         addInterceptor(
             Interceptor { chain ->
                 val builder = chain.request().newBuilder()
-                builder.header("X-Api-Key", "0068ac69d80f4a97b794fa26311cb323")
+                builder.header("X-Api-Key", "d2691289ff474bb9850b71fa026ce470")
                 return@Interceptor chain.proceed(builder.build())
             }
         )

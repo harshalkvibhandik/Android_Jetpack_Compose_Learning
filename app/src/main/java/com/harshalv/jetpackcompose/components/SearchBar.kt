@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.harshalv.jetpackcompose.ui.MainViewModel
 
-// Step 14: replace newsManager with MainViewModel
 @Composable
 fun SearchBar(query: MutableState<String>, viewModel: MainViewModel) {
     val localFocusManager = LocalFocusManager.current
@@ -68,7 +67,6 @@ fun SearchBar(query: MutableState<String>, viewModel: MainViewModel) {
             keyboardActions = KeyboardActions(
                 onSearch = {
                     if (query.value != "") {
-                        // Step 15: getSearched article from viewModel
                         viewModel.getSearchedArticles(query.value)
                     }
                     localFocusManager.clearFocus()

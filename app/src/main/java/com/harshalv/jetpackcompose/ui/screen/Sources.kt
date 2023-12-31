@@ -1,5 +1,6 @@
 package com.harshalv.jetpackcompose.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,13 +40,19 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.harshalv.jetpackcompose.R
+import com.harshalv.jetpackcompose.components.ErrorUI
+import com.harshalv.jetpackcompose.components.LoadingUI
 import com.harshalv.jetpackcompose.data.models.TopNewsArticle
 import com.harshalv.jetpackcompose.ui.MainViewModel
 
-
-//TOdo 8: replace newsManager with MainViewmodel
+// Step 15: create the loading and error state parameters
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Sources(viewModel: MainViewModel) {
+fun Sources(
+    viewModel: MainViewModel,
+    isLoading: MutableState<Boolean>,
+    isError: MutableState<Boolean>
+) {
     val items = listOf(
         "TechCrunch" to "techcrunch",
         "TalkSport" to "talksport",
@@ -57,7 +65,6 @@ fun Sources(viewModel: MainViewModel) {
 
         TopAppBar(
             title = {
-                // Step 9: collect the value from sourceName an set as toolbar title
                 Text(text = "${viewModel.sourceName.collectAsState().value} Source")
             },
             actions = {
@@ -76,7 +83,6 @@ fun Sources(viewModel: MainViewModel) {
                     ) {
                         items.forEach {
                             DropdownMenuItem(onClick = {
-                                // Step 11: on menu item selected set selected as sourceName and fetch articles
                                 viewModel.sourceName.value = it.second
                                 viewModel.getArticleBySource()
                                 menuExpanded = false
@@ -89,14 +95,23 @@ fun Sources(viewModel: MainViewModel) {
             }
         )
     }) {
+        // Step 15: if state is loading show the loadingui, if there is an error show the errorui,
+        //if request is successful get the returned article and pass to SourceContent
+        when {
+            isLoading.value -> {
+                LoadingUI()
+            }
 
-        // Step 12: On first screen launch fetch article from default source
-        viewModel.getArticleBySource()
-        // Step 13: collect article by source and pass as source content
-        val article = viewModel.getArticleBySource.collectAsState().value
+            isError.value -> {
+                ErrorUI()
+            }
 
-        SourceContent(articles = article.articles ?: listOf())
-
+            else -> {
+                viewModel.getArticleBySource()
+                val article = viewModel.getArticleBySource.collectAsState().value
+                SourceContent(articles = article.articles ?: listOf())
+            }
+        }
     }
 }
 
@@ -160,7 +175,8 @@ fun SourceContent(articles: List<TopNewsArticle>) {
                                             uriHandler.openUri(result.item)
                                         }
                                     }
-                            })
+                            }
+                        )
                     }
                 }
             }
@@ -179,7 +195,6 @@ fun SourceContentPreview() {
                 description = "The suspected kidnapper of four-year-old Cleo Smith has been treated in hospital for a second time amid reports he was “attacked” while in custody.",
                 publishedAt = "2021-11-04T04:42:40Z"
             )
-
         )
     )
 }

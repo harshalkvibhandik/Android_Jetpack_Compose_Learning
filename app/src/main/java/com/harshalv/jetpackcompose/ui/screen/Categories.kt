@@ -16,6 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.harshalv.jetpackcompose.R
+import com.harshalv.jetpackcompose.components.ErrorUI
+import com.harshalv.jetpackcompose.components.LoadingUI
 import com.harshalv.jetpackcompose.data.models.TopNewsArticle
 import com.harshalv.jetpackcompose.model.MockData
 import com.harshalv.jetpackcompose.model.MockData.getTimeAgo
@@ -33,25 +36,48 @@ import com.harshalv.jetpackcompose.model.getAllArticleCategory
 import com.harshalv.jetpackcompose.ui.MainViewModel
 import com.skydoves.landscapist.coil.CoilImage
 
+// Step 17: create the loading and error state parameters
 @Composable
-fun Categories(onFetchCategory: (String) -> Unit = {}, viewModel: MainViewModel) {
+fun Categories(
+    onFetchCategory: (String) -> Unit = {},
+    viewModel: MainViewModel,
+    isLoading: MutableState<Boolean>,
+    isError: MutableState<Boolean>
+) {
     val tabsItems = getAllArticleCategory()
     Column {
-        LazyRow {
-            items(tabsItems.size) {
-                val category = tabsItems[it]
-                CategoryTab(
-                    category = category.categoryName, onFetchCategory = onFetchCategory,
+        // Step 15: if state is loading show the loadingui, if there is an error show the errorui,
+        //if request is successful get the returned article and pass to ArticleContent
 
-                    isSelected =
-                    viewModel.selectedCategory.collectAsState().value == category
-                )
+        when {
+            isLoading.value -> {
+                LoadingUI()
+            }
+
+            isError.value -> {
+                ErrorUI()
+            }
+
+            else -> {
+                LazyRow {
+                    items(tabsItems.size) {
+                        val category = tabsItems[it]
+                        CategoryTab(
+                            category = category.categoryName, onFetchCategory = onFetchCategory,
+
+                            isSelected =
+                            viewModel.selectedCategory.collectAsState().value == category
+                        )
+                    }
+                }
             }
         }
-
         ArticleContent(
-            articles = viewModel.getArticleByCategory.collectAsState().value.articles ?: listOf()
+            articles = viewModel.getArticleByCategory.collectAsState().value.articles
+                ?: listOf()
         )
+
+
     }
 }
 

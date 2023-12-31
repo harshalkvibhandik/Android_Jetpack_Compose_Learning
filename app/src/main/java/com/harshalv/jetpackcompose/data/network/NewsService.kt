@@ -13,7 +13,6 @@ interface NewsService {
     @GET("top-headlines")
     suspend fun getArticlesByCategories(@Query("category") category: String): TopNewsResponse
 
-    // Step 1: replace Retrofit call with coroutine
     @GET("everything")
     suspend fun getArticlesBySources(@Query("sources") source: String): TopNewsResponse
 

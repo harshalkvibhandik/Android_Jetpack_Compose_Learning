@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -61,20 +62,25 @@ fun Navigation(
 ) {
     val articles = mutableListOf(TopNewsArticle())
     val topArticles = viewModel.newsResponse.collectAsState().value.articles
+    val query by viewModel.query.collectAsState()
+    // Step 11 collect loading and error state from viewModel
+    val loading by viewModel.isLoading.collectAsState()
+    val error by viewModel.isError.collectAsState()
     articles.addAll(topArticles ?: listOf())
     NavHost(
         navController = navController,
         startDestination = BottomMenuScreen.TopNews.route,
         modifier = Modifier.padding(paddingValues)
     ) {
-        // Step 22 create a queryState and set query value from viewmodel,pass in querystate into bottomNavigation
         val queryState =
-            mutableStateOf(viewModel.query.value)
+            mutableStateOf(query)
+        // Step 12 set to a mutable state
+        val isLoading = mutableStateOf(loading)
+        val isError = mutableStateOf(error)
+        // Step 13: pass in the state values as argument yo bottomNavigation
         bottomNavigation(
-            navController = navController,
-            articles,
-            viewModel = viewModel,
-            query = queryState
+            navController = navController, articles, viewModel = viewModel, query = queryState,
+            isError = isError, isLoading = isLoading
         )
         composable("Detail/{index}",
             arguments = listOf(
@@ -84,7 +90,6 @@ fun Navigation(
             index?.let {
                 if (queryState.value != "") {
                     articles.clear()
-                    // Step 21 collect searchedNewsResponse from viewModel
                     articles.addAll(
                         viewModel.searchedNewsResponse.collectAsState().value.articles ?: listOf()
                     )
@@ -99,15 +104,23 @@ fun Navigation(
     }
 }
 
-// Step 19:create a query variable
+// Step 9: create the loading and error state parameter
 fun NavGraphBuilder.bottomNavigation(
     navController: NavController, articles: List<TopNewsArticle>, query: MutableState<String>,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    isLoading: MutableState<Boolean>, isError: MutableState<Boolean>
 ) {
-    composable(BottomMenuScreen.TopNews.route) {
 
-        // Step 20: replace newsManager with viewModel and pass in a query parameter
-        TopNews(navController = navController, articles, query, viewModel = viewModel)
+    composable(BottomMenuScreen.TopNews.route) {
+        // Step 10: pass in the loading and error value as argument
+        TopNews(
+            navController = navController,
+            articles,
+            query,
+            viewModel = viewModel,
+            isLoading = isLoading,
+            isError = isError
+        )
     }
     composable(BottomMenuScreen.Categories.route) {
         viewModel.getArticlesByCategory("business")
@@ -115,10 +128,10 @@ fun NavGraphBuilder.bottomNavigation(
         Categories(viewModel = viewModel, onFetchCategory = {
             viewModel.onSelectedCategoryChanged(it)
             viewModel.getArticlesByCategory(it)
-        })
+        }, isError = isError, isLoading = isLoading)
     }
     composable(BottomMenuScreen.Sources.route) {
-        // Step 13: pass in viewmodel as argument
-        Sources(viewModel = viewModel)
+        // Step 16: pass in the loading and error state argument already in the bottom navigation paranthesis
+        Sources(viewModel = viewModel, isLoading = isLoading, isError = isError)
     }
 }

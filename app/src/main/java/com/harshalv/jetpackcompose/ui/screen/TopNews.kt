@@ -26,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.harshalv.jetpackcompose.R
+import com.harshalv.jetpackcompose.components.ErrorUI
+import com.harshalv.jetpackcompose.components.LoadingUI
 import com.harshalv.jetpackcompose.components.SearchBar
 import com.harshalv.jetpackcompose.data.models.TopNewsArticle
 import com.harshalv.jetpackcompose.model.MockData
@@ -33,30 +35,42 @@ import com.harshalv.jetpackcompose.model.MockData.getTimeAgo
 import com.harshalv.jetpackcompose.ui.MainViewModel
 import com.skydoves.landscapist.coil.CoilImage
 
-// Step 16: replace newsManager with ViewModel
+// Step 7: create the loading and error state as parameter
 @Composable
 fun TopNews(
     navController: NavController, articles: List<TopNewsArticle>, query: MutableState<String>,
-    viewModel: MainViewModel
+    viewModel: MainViewModel, isLoading: MutableState<Boolean>, isError: MutableState<Boolean>
 ) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        // Step 17: pass in viewmodel as SearchBar argument
         SearchBar(query = query, viewModel = viewModel)
         val searchedText = query.value
         val resultList = mutableListOf<TopNewsArticle>()
         if (searchedText != "") {
-            // Step 18:collect searchedNewsResponse from viwModel
             resultList.addAll(
                 viewModel.searchedNewsResponse.collectAsState().value.articles ?: articles
             )
         } else {
             resultList.addAll(articles)
         }
-        LazyColumn {
-            items(resultList.size) { index ->
-                TopNewsItem(article = resultList[index],
-                    onNewsClick = { navController.navigate("Detail/$index") }
-                )
+        // Step 8: if state is loading show the loadingui, if there is an error show the errorui,
+        // if article response is returned show lazy column and set the article
+        when {
+            isLoading.value -> {
+                LoadingUI()
+            }
+
+            isError.value -> {
+                ErrorUI()
+            }
+
+            else -> {
+                LazyColumn {
+                    items(resultList.size) { index ->
+                        TopNewsItem(article = resultList[index],
+                            onNewsClick = { navController.navigate("Detail/$index") }
+                        )
+                    }
+                }
             }
         }
     }

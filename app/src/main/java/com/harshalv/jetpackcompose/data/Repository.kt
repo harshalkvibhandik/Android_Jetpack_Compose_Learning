@@ -8,8 +8,6 @@ class Repository(private val manager: NewsManager) {
 
     suspend fun getArticleByCategory(category: String) = manager.getArticlesByCategory(category)
 
-
-    // Step 3: create methods to return getArticlesBySource and getSearchedArticles
     suspend fun getArticlesBySource(source: String) = manager.getArticleBySource(source = source)
 
     suspend fun getSearchedArticles(query: String) = manager.getSearchedArticles(query = query)
