@@ -14,17 +14,17 @@ class Utils {
     fun getBalanceTypeTitle(balanceType: MainBalanceType) = when (balanceType) {
         MainBalanceType.AVAILABLE -> DisplayText(
             text = "account_summary_available_balance",
-            accessibilityText = "account_summary_available_balance_accessbilityText"
+            accessibilityText = "account_summary_available_balance_accessibilityText"
         )
 
         MainBalanceType.LEDGER -> DisplayText(
             text = "account_summary_used_balance",
-            accessibilityText = "account_summary_used_balance_accessobility"
+            accessibilityText = "account_summary_used_balance_accessibility"
         )
 
         else -> DisplayText(
             text = "account_summary_used_balance",
-            accessibilityText = "account_summary_used_balance_accessobility"
+            accessibilityText = "account_summary_used_balance_accessibility"
         )
     }
 }
