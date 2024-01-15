@@ -6,6 +6,7 @@ import org.junit.Test
 
 class CompactFeatureConfigTest {
 
+
     @Test
     fun `given enable map is null, when isFeatureEnable is called, then return false`() {
         val enable = null
